@@ -46,6 +46,8 @@ public abstract class CityAsyncTask  extends AsyncTask{
         else{
             ArrayList<WeatherData> weatherData = new ArrayList<>();
 
+
+            /// todo
         }
     }
 }
