@@ -60,7 +60,7 @@ public class CityAsyncTask  extends AsyncTask <String, Integer, String>{
                 String maxTemperature = String.format("%1$,.1f", mainjObj.getDouble("temp_max") - 273.15) + " C";
                 String minTemperature = String.format("%1$,.1f", mainjObj.getDouble("temp_min") - 273.15) + " C";
                 JSONObject windjObj = responsejObj.getJSONObject("wind");
-                String windSpeed = String.format("%1$,.1f", windjObj.getDouble("speed"))+ " mph";
+                String windSpeed = String.format("%1$,.1f", windjObj.getDouble("speed") * 1.609300008)+ " km/h";
                 //JSONObject cloudjObj = responsejObj.getJSONObject("clouds");
                 String name = responsejObj.getString("name");
                 JSONObject sysjObj = responsejObj.getJSONObject("sys");

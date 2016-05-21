@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,21 +23,6 @@ public class WeatherAdapter extends ArrayAdapter<WeatherData> {
         super(context, 0, weather);
     }
 
-//    @Override
-//    public int getCount() {
-//        return this.weather.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        return null;
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -44,7 +30,10 @@ public class WeatherAdapter extends ArrayAdapter<WeatherData> {
 
         // get WeatherData and content strings
         WeatherData currentWeatherData = (WeatherData) getItem(position);
-        String name = currentWeatherData.getName();
+        String name;
+        if(currentWeatherData.getName()!= null);{
+            name = currentWeatherData.getName();
+        }
         String description = currentWeatherData.getWeatherDescription();
         String temperature = currentWeatherData.getTempCurrent();
         String minTemp = currentWeatherData.getTempMin();

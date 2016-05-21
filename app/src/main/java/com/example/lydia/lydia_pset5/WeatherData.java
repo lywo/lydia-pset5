@@ -1,9 +1,10 @@
 package com.example.lydia.lydia_pset5;
+import java.io.Serializable;
 
 /**
  * Created by Lydia on 18-5-2016.
  */
-public class WeatherData {
+public class WeatherData implements Serializable {
     private String weatherDescription;
     private String tempCurrent; // in Kelvin - 273,15
     private String tempMin; // in Kelvin

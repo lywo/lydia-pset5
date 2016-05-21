@@ -6,6 +6,7 @@ Found results of WeatherData are put in ListView via control of WeatherAdapter
 Next cityname can be searched for weather information
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiEnterpriseConfig;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,12 +32,15 @@ import static android.widget.AdapterView.*;
 public class MainActivity extends AppCompatActivity {
     ArrayList<WeatherData> weather = new ArrayList<>();
     WeatherAdapter myAdapter;
+    // TODO: 21-5-2016  fix problem with crash when landscape view, adding new city
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myAdapter = new WeatherAdapter(this, weather);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         final Button searchBT = (Button) findViewById(R.id.searchButton);
         searchBT.setEnabled(false);
         EditText myEditText = (EditText) findViewById(R.id.newRequestET);
@@ -107,6 +112,13 @@ public class MainActivity extends AppCompatActivity {
         weather.add(newWeatherData);
         EditText tagInputET = (EditText)  findViewById(R.id.newRequestET);
         WeatherAdapter myAdapter  = new WeatherAdapter(this, weather);
+
+        // hide keyboard when new city is searched
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+        // clear EditText
+        assert tagInputET != null;
         tagInputET.setText("");
         myAdapter.notifyDataSetChanged();
     }
@@ -118,9 +130,10 @@ public class MainActivity extends AppCompatActivity {
             weather = (ArrayList<WeatherData>) savedInstanceState.getSerializable("d");
             WeatherAdapter adapter = new WeatherAdapter(this, weather);
             ListView listView = (ListView) findViewById(R.id.weatherDataLV);
+            assert listView != null;
             listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
