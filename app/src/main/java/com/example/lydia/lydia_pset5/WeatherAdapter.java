@@ -4,39 +4,69 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 /**
  * Created by Lydia on 18-5-2016.
  */
-public class WeatherAdapter extends BaseAdapter {
-    private Context context;
-    private ArrayList<WeatherData> weather;
+public class WeatherAdapter extends ArrayAdapter<WeatherData> {
+//    private Context context;
+//    private ArrayList<WeatherData> weather;
 
-
-    @Override
-    public int getCount() {
-        return this.weather.size();
+    // Constructor
+    public WeatherAdapter(Context context, ArrayList<WeatherData> weather) {
+        super(context, 0, weather);
     }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+//    @Override
+//    public int getCount() {
+//        return this.weather.size();
+//    }
+//
+//    @Override
+//    public Object getItem(int position) {
+//        return null;
+//    }
+//
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if (view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.row_layout, parent, false);
-        }
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        view = inflater.inflate(R.layout.row_layout, parent, false);
+
+        // get WeatherData and content strings
+        WeatherData currentWeatherData = (WeatherData) getItem(position);
+        String name = currentWeatherData.getName();
+        String description = currentWeatherData.getWeatherDescription();
+        String temperature = currentWeatherData.getTempCurrent();
+        String minTemp = currentWeatherData.getTempMin();
+        String maxTemp = currentWeatherData.getTempMax();
+        String windSpd = currentWeatherData.getWindSpeed();
+
+        // get textViews for content
+        TextView contentNameTV = (TextView) view.findViewById(R.id.contentName);
+        TextView contentDescriptionTV = (TextView) view.findViewById(R.id.contentDescription);
+        TextView contentTemperatureTV = (TextView) view.findViewById(R.id.contentTemperature);
+        TextView contentMinTemperatureTV = (TextView) view.findViewById(R.id.contentMinTemperature);
+        TextView contentMaxTemperatureTV = (TextView) view.findViewById(R.id.contentMaxTemperature);
+        TextView contentWindSpeedTV = (TextView) view.findViewById(R.id.contentWindSpeed);
+
+        // set content in TextViews
+        contentNameTV.setText(name);
+        contentDescriptionTV.setText(description);
+        contentMaxTemperatureTV.setText(maxTemp);
+        contentMinTemperatureTV.setText(minTemp);
+        contentTemperatureTV.setText(temperature);
+        contentWindSpeedTV.setText(windSpd);
+
+        return view;
     }
 }

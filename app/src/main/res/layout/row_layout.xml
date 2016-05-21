@@ -1,6 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelName"
+            android:text="City: "
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="2700dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentName"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/labelName"
+            android:layout_toRightOf="@+id/labelName"
+            android:singleLine="true"/>
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelDescription"
+            android:text="Description: "
+            android:textSize="15sp"
+            android:layout_below="@+id/labelName"/>
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentDescription"
+            android:layout_above="@+id/labelTemperature"
+            android:layout_toRightOf="@+id/labelDescription"
+            android:layout_toEndOf="@+id/labelDescription"
+            android:singleLine="true"/>
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelTemperature"
+            android:text="Temperature: "
+            android:textSize="15sp"
+            android:layout_below="@+id/labelDescription" />
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentTemperature"
+            android:layout_above="@+id/labelMinTemperature"
+            android:layout_toEndOf="@+id/labelTemperature"
+            android:layout_toRightOf="@+id/labelTemperature"/>
+
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelMinTemperature"
+            android:text="Min temp: "
+            android:textSize="15sp"
+            android:layout_below="@+id/labelTemperature"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentMinTemperature"
+            android:layout_above="@+id/labelMaxTemperature"
+            android:layout_toRightOf="@+id/labelMinTemperature"
+            android:layout_toEndOf="@+id/labelMinTemperature" />
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelMaxTemperature"
+            android:text="Max temp: "
+            android:textSize="15sp"
+            android:layout_below="@+id/labelMinTemperature"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentMaxTemperature"
+            android:layout_above="@+id/contentWindSpeed"
+            android:layout_toRightOf="@+id/labelMaxTemperature"
+            android:layout_toEndOf="@+id/labelMaxTemperature" />
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelWindSpeed"
+            android:text="Windspeed: "
+            android:textSize="15sp"
+            android:layout_below="@+id/labelMaxTemperature"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentWindSpeed"
+            android:layout_alignBottom="@+id/labelWindSpeed"
+            android:layout_toRightOf="@+id/labelWindSpeed"
+            android:layout_toEndOf="@+id/labelWindSpeed" />
+
+    </RelativeLayout>
 
 </LinearLayout>

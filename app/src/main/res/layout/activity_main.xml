@@ -7,14 +7,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.lydia.lydia_pset5.MainActivity">
+    tools:context="com.example.lydia.lydia_pset5.MainActivity"
+    android:id="@+id/mainLayout">
+
+
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/weatherDataLV"
         android:layout_above="@+id/newRequestET"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="false">
 
     </ListView>
 
@@ -24,7 +29,8 @@
         android:id="@+id/newRequestET"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:hint="Cityname"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -32,5 +38,7 @@
         android:text="Search"
         android:layout_alignTop="@+id/newRequestET"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="getData"
+        android:id="@+id/searchButton"/>
 </RelativeLayout>

@@ -5,19 +5,22 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by Lydia on 18-5-2016.
  */
-public abstract class CityAsyncTask  extends AsyncTask{
-
+public class CityAsyncTask  extends AsyncTask <String, Integer, String>{
     Context context;
-    Activity activity;
+    MainActivity activity;
 
     // constructor
-    public CityAsyncTask(MainActivity activity){
-        this.activity = activity;
+    public CityAsyncTask(MainActivity Mainactivity){
+        this.activity = Mainactivity;
         this.context = this.activity.getApplicationContext();
     }
 
@@ -27,7 +30,7 @@ public abstract class CityAsyncTask  extends AsyncTask{
     }
 
     @Override
-    protected Object doInBackground(String... params) {
+    protected String doInBackground(String... params) {
         return HTTPRequestHelper.serverDownload( params);
     }
 
@@ -42,12 +45,36 @@ public abstract class CityAsyncTask  extends AsyncTask{
         if (result.length() == 0){
             Toast.makeText(context, "No weather was found", Toast.LENGTH_SHORT).show();
         }
-        // parse JSON
         else{
-            ArrayList<WeatherData> weatherData = new ArrayList<>();
+            WeatherData newWeatherData = null;
+            // parse JSON
+            try {
+                JSONObject responsejObj = new JSONObject(result);
+                JSONArray weatherjArr = responsejObj.getJSONArray("weather");
+                JSONObject weatherItemjObj = weatherjArr.getJSONObject(0);
+                String weatherDes = weatherItemjObj.getString("description");
+                String weatherMain = weatherItemjObj.getString("main");
+                String weatherDescription = weatherMain + " - " + weatherDes;
+                JSONObject mainjObj = responsejObj.getJSONObject("main");
+                String temperature = String.format("%1$,.1f", mainjObj.getDouble("temp") - 273.15) + " C";
+                String maxTemperature = String.format("%1$,.1f", mainjObj.getDouble("temp_max") - 273.15) + " C";
+                String minTemperature = String.format("%1$,.1f", mainjObj.getDouble("temp_min") - 273.15) + " C";
+                JSONObject windjObj = responsejObj.getJSONObject("wind");
+                String windSpeed = String.format("%1$,.1f", windjObj.getDouble("speed"))+ " mph";
+                //JSONObject cloudjObj = responsejObj.getJSONObject("clouds");
+                String name = responsejObj.getString("name");
+                JSONObject sysjObj = responsejObj.getJSONObject("sys");
+                String country = sysjObj.getString("country");
+                String completeName = name + ", " + country;
 
+                // adding values to dataset (weatherDescription, tempCurrent, tempMax, tempMin, windSpeed)
+                newWeatherData = new WeatherData(completeName, weatherDescription, temperature, maxTemperature, minTemperature, windSpeed);
 
-            /// todo
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            // call MainActivity to set data to ListView
+            this.activity.setData(newWeatherData);
         }
     }
 }

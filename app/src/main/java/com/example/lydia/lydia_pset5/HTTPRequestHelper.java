@@ -1,5 +1,7 @@
 package com.example.lydia.lydia_pset5;
 
+import android.widget.Toast;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +17,6 @@ public class HTTPRequestHelper {
     // make String for url
     private static final String base_url =  "http://api.openweathermap.org/data/2.5/weather?q=";
     private static final String key = "&APPID=fea160f621de96f732bac7f38500f1ff";
-   // private static final String url2 = "";
 
     // method to download form server
     protected static synchronized String serverDownload (String ... values) {
@@ -49,7 +50,7 @@ public class HTTPRequestHelper {
                 Integer responseCode = connection.getResponseCode();
 
                 // if 200-299 read inpustream
-                if (200 <= responseCode && 299 <= responseCode){
+                if (200 <= responseCode && responseCode <= 299){
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     String currentLine;
                     while ((currentLine = bufferedReader.readLine()) != null){
@@ -59,8 +60,8 @@ public class HTTPRequestHelper {
                 // else read error stream
                 else{
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-
                     // ToDo read error stream and communicate error
+                    return null;
                 }
 
             } catch (IOException e) {

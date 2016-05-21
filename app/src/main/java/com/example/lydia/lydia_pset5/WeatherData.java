@@ -9,16 +9,21 @@ public class WeatherData {
     private String tempMin; // in Kelvin
     private String tempMax; //in Kelvin
     private String windSpeed; //in mph
+    private String name; // cityname
 
     // constructor
-    public WeatherData (String weatherDescription, String tempCurrent, String tempMax, String tempMin, String windSpeed){
+    public WeatherData (String name, String weatherDescription, String tempCurrent, String tempMax, String tempMin, String windSpeed){
         super();
         this.tempCurrent =tempCurrent;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
         this.windSpeed = windSpeed;
         this.weatherDescription = weatherDescription;
+        this.name = name;
     }
+
+    public String getName(){return name;}
+    public void setName(String name){this.name = name;}
 
     public String getWeatherDescription(){return weatherDescription;}
     public void setWeatherDescription(String weatherDescription){this.weatherDescription = weatherDescription;}
