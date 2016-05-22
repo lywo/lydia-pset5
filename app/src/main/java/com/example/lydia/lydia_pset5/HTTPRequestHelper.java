@@ -1,12 +1,7 @@
 package com.example.lydia.lydia_pset5;
 
-import android.widget.Toast;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -16,13 +11,10 @@ import java.net.URL;
  * Created by Lydia on 18-5-2016.
  */
 public class HTTPRequestHelper {
-    // make String for url
-
-    // Test URL for error handling
-   // private static final String base_url =  "http://notfound/data/2.5/weather?q=";
     // Weather URL
    private static final String base_url =  "http://api.openweathermap.org/data/2.5/weather?q=";
 
+    // key for API URL
     private static final String key = "&APPID=fea160f621de96f732bac7f38500f1ff";
 
     // method to download form server
@@ -56,12 +48,9 @@ public class HTTPRequestHelper {
                 // get response code
                 Integer responseCode = connection.getResponseCode();
 
-//                InputStream is = null;
-
                 // if 200-299 read inpustream
                 if (200 <= responseCode && responseCode <= 299){
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//                    is = connection.getInputStream();
                     String currentLine;
                     while ((currentLine = bufferedReader.readLine()) != null){
                         result = result + currentLine;
@@ -69,9 +58,7 @@ public class HTTPRequestHelper {
                 }
                 // else read error stream
                 else{
-                    // ToDo read error stream and communicate error
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-//                    is = connection.getErrorStream();
                     if (responseCode >= 300 && responseCode < 400){
                         result = "ERROR: redirect error:\n";
                     }

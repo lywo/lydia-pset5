@@ -20,7 +20,8 @@ public class DBHelper extends SQLiteOpenHelper{
     public static final String COLUMN_ITEM = "searchItem";
     private final Context context;
 
-    public DBHelper(Context context){ // DIT IS DE CONSTRUCTOR
+    // constructor
+    public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -57,8 +58,6 @@ public class DBHelper extends SQLiteOpenHelper{
     search db for 1 item
      */
     public ArrayList <String> searchItem(String item){
-//        int IndexCountry = item.lastIndexOf(",");
-//        item = item.substring(0, IndexCountry);
         String [] Columns = {COLUMN_ITEM};
         ArrayList <String> result = new ArrayList<>();
 
@@ -115,6 +114,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     /*
     Function to clean up whole database.
+    for debug function
      */
     public void DeleteAll(){
         SQLiteDatabase db = getWritableDatabase();
@@ -122,6 +122,10 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(query);
     }
 
+    /*
+    Function to Delete Database
+    for debug funtion
+     */
     public void DeleteDatabase(){
         context.deleteDatabase(DATABASE_NAME);
     }

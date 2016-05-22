@@ -10,4 +10,5 @@ Every time the app is started, you favourites are downloaded from a database, an
 Delete an item from ListView and Database via longpress on the item in the ListView. 
 
 ## Screenshots ##
-![List of Cities](https://github.com/lywo/lydia-pset5/blob/master/doc/screenshotcitieslang.png?raw=true)
+![List of Cities](https://github.com/lywo/lydia-pset5/blob/master/doc/screenshotcitieslang-resize.png?raw=true)
+

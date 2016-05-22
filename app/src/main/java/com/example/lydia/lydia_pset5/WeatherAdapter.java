@@ -15,9 +15,6 @@ import java.util.ArrayList;
  * Created by Lydia on 18-5-2016.
  */
 public class WeatherAdapter extends ArrayAdapter<WeatherData> {
-//    private Context context;
-//    private ArrayList<WeatherData> weather;
-
     // Constructor
     public WeatherAdapter(Context context, ArrayList<WeatherData> weather) {
         super(context, 0, weather);
