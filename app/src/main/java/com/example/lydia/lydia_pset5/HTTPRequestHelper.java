@@ -17,9 +17,13 @@ import java.net.URL;
  */
 public class HTTPRequestHelper {
     // make String for url
-    private static final String base_url =  "http://api.openweathermap.org/data/2.5/weather?q=";
+
+    // Test URL for error handling
+   // private static final String base_url =  "http://notfound/data/2.5/weather?q=";
+    // Weather URL
+   private static final String base_url =  "http://api.openweathermap.org/data/2.5/weather?q=";
+
     private static final String key = "&APPID=fea160f621de96f732bac7f38500f1ff";
-    private static String IMG_URL = "http://openweathermap.org/img/w/";
 
     // method to download form server
     protected static synchronized String serverDownload (String ... values) {
@@ -52,12 +56,12 @@ public class HTTPRequestHelper {
                 // get response code
                 Integer responseCode = connection.getResponseCode();
 
-                InputStream is = null;
+//                InputStream is = null;
 
                 // if 200-299 read inpustream
                 if (200 <= responseCode && responseCode <= 299){
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    is = connection.getInputStream();
+//                    is = connection.getInputStream();
                     String currentLine;
                     while ((currentLine = bufferedReader.readLine()) != null){
                         result = result + currentLine;
@@ -67,38 +71,25 @@ public class HTTPRequestHelper {
                 else{
                     // ToDo read error stream and communicate error
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-                    is = connection.getErrorStream();
+//                    is = connection.getErrorStream();
+                    if (responseCode >= 300 && responseCode < 400){
+                        result = "ERROR: redirect error:\n";
+                    }
+                    if(responseCode >= 400 && responseCode < 500){
+                        result = "ERROR: client error:\n";
+                    }
+                    if(responseCode >= 500){
+                        result = "ERROR: server error:\n";
+                    }
+                    String currentLine;
+                    while ((currentLine = bufferedReader.readLine()) != null){
+                        result = result + currentLine;
+                    }
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return result;
-    }
-
-    public byte[] getImage(String code) {
-        HttpURLConnection con = null;
-        InputStream is = null;
-        try {
-            con = (HttpURLConnection) (new URL(IMG_URL + code)).openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            // Let's read the response
-            is = con.getInputStream();
-            byte[] buffer = new byte[1024];
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            while (is.read(buffer) != -1)
-                baos.write(buffer);
-
-            return baos.toByteArray();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return null;
     }
 }

@@ -7,8 +7,7 @@ Next cityname can be searched for weather information
  */
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.wifi.WifiEnterpriseConfig;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,19 +19,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.os.AsyncTask;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.widget.AdapterView.*;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<WeatherData> weather = new ArrayList<>();
     WeatherAdapter myAdapter;
-    // TODO: 21-5-2016  fix problem with crash when landscape view, adding new city
+    static Boolean favouritesloaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +36,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         myAdapter = new WeatherAdapter(this, weather);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        final Button searchBT = (Button) findViewById(R.id.searchButton);
-        searchBT.setEnabled(false);
         EditText myEditText = (EditText) findViewById(R.id.newRequestET);
+        final Button searchBT = (Button) findViewById(R.id.searchButton);
+        final DBHelper myDB = new DBHelper(this);
+
+        // Debug function only DANGER!!
+        // myDB.DeleteAll();
+
+        if (favouritesloaded == false){
+            ArrayList<String> savedNames = (ArrayList) myDB.readDB();
+            int size = savedNames.size();
+            Toast.makeText(this, "Loading favourites", Toast.LENGTH_SHORT).show();
+            for(int i = 0; i < size; i++ ){
+                new CityAsyncTask(MainActivity.this).execute(savedNames.get(i));
+            }
+            favouritesloaded = true;
+        }
+
+        /*
+        work around error when executing html request when turned to landscapte view
+        To Do fix error with AsyncTask
+         */
+        Boolean Enabled = true;
+        int Visibility = VISIBLE;
+        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
+            Enabled = false;
+            Visibility = GONE;
+        }
+        myEditText.setVisibility(Visibility);
+        myEditText.setEnabled(Enabled);
+        searchBT.setVisibility(Visibility);
+        searchBT.setEnabled(Enabled);
+
         myEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,14 +89,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        EditText tagInputET = (EditText) findViewById(R.id.newRequestET);
         final ListView weatherLV = (ListView) findViewById(R.id.weatherDataLV);
         weatherLV.setAdapter(myAdapter);
 
         weatherLV.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // todo insert extra function
+                Toast.makeText(getApplicationContext(), "Adding favourite", Toast.LENGTH_SHORT).show();
+                WeatherData newWeatherData = (WeatherData) weatherLV.getItemAtPosition(position);
+                String cityName = newWeatherData.getName();
+                int IndexCountry = cityName.lastIndexOf(",");
+                cityName = cityName.substring(0, IndexCountry);
+                myDB.addItem(cityName);
             }
         });
 
@@ -84,8 +112,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Item deleted", Toast.LENGTH_SHORT).show();
                 WeatherData oldWeather = (WeatherData) weatherLV.getItemAtPosition(position);
 
+                String nameCity = oldWeather.getName();
+                int IndexCountry = nameCity.lastIndexOf(",");
+                nameCity = nameCity.substring(0, IndexCountry);
+
                 // Delete old weather info
                 weather.remove(oldWeather);
+                myDB.deleteItem(nameCity);
 
                 // Update ListView
                 myAdapter.notifyDataSetChanged();
@@ -102,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         EditText tagInputET = (EditText) findViewById(R.id.newRequestET);
         String userInput = tagInputET.getText().toString();
         new CityAsyncTask(MainActivity.this).execute(userInput);
-
     }
 
     /*
@@ -140,6 +172,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("d", weather);
-        super.onSaveInstanceState(outState);
     }
 }

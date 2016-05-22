@@ -45,6 +45,9 @@ public class CityAsyncTask  extends AsyncTask <String, Integer, String>{
         if (result.length() == 0){
             Toast.makeText(context, "No weather was found", Toast.LENGTH_SHORT).show();
         }
+        else if (result.startsWith("ERROR:")){
+            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+        }
         else{
             WeatherData newWeatherData = null;
             // parse JSON
